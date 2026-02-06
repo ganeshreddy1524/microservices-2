@@ -2,6 +2,7 @@ package com.taskservice.controller;
 
 import com.taskservice.dto.TaskRequest;
 import com.taskservice.dto.TaskResponse;
+import com.taskservice.dto.UserResponse;
 import com.taskservice.model.TaskStatus;
 import com.taskservice.service.TaskService;
 import jakarta.validation.Valid;
@@ -24,6 +25,24 @@ public class TaskController {
 
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
+    }
+
+    @PostMapping("/{taskId}/notify")
+    public ResponseEntity<Map<String, Object>> notifyTaskCreation(
+            @PathVariable Long taskId,
+            @RequestParam Long userId) {
+
+        Map<String, Object> response =
+                taskService.notifyTaskCreated(taskId, userId);
+
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<UserResponse> getUserFromTaskService(
+            @PathVariable Long userId) {
+
+        UserResponse user = taskService.fetchUserById(userId);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping

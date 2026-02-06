@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -37,6 +39,22 @@ public class TaskService {
         this.notificationClient = notificationClient;
     }
 
+
+    public Map<String, Object> notifyTaskCreated(Long taskId, Long userId) {
+
+        Map<String, Object> notification = new HashMap<>();
+        notification.put("type", "TASK_CREATED");
+        notification.put("message", "Task with ID " + taskId + " has been created.");
+        notification.put("userId", userId);
+        notification.put("taskId", taskId);
+        notification.put("createdAt", LocalDateTime.now());
+        notification.put("sent", false);
+
+        return notificationClient.sendNotification(notification);
+    }
+    public UserResponse fetchUserById(Long userId) {
+        return userClient.getUserById(userId);
+    }
     public List<TaskResponse> getAllTasks() {
         logger.debug("Fetching all tasks");
         return taskRepository.findAll().stream()

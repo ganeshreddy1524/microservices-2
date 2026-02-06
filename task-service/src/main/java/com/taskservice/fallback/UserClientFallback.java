@@ -8,15 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-/**
- * Fallback implementation for UserClient.
- *
- * This class provides fallback responses when the user-service is unavailable.
- * The circuit breaker pattern ensures that:
- * 1. The system remains responsive even when dependencies fail
- * 2. Failed services get time to recover (circuit opens)
- * 3. Users get meaningful fallback responses instead of errors
- */
+
 @Component
 public class UserClientFallback implements UserClient {
 
